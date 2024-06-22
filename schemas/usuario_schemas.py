@@ -12,9 +12,42 @@ import shutil
 import secrets
 
 
-class Usuario(BaseModel):
+class UsuarioBaseSchema(BaseModel):
     id: PositiveInt =Field(gt=0,le=1000)
+    def idDuplicados(obj, lista:List):
+        for item in lista:
+            if item.id == obj.id :
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT,
+                            detail=f"El id ya se encuentra registrado" )
     nombre:str = Field (min_length=8, max_length=50)  
     email: EmailStr
+    def emailDuplicado(obj, lista:List):
+        for item in lista:
+            if item.email == obj.email:
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT,
+                            detail=f"El email ya se encuentra registrado" )    
+    rol: str = 'Cliente'
+    @field_validator('rol')
+    def validar_rol(cls, v: str) -> str:
+        rol_valido = v.upper()
+        if rol_valido not in ("CLIENTE", "ADMINISTRADOR"):
+            raise ValueError("El valor del campo 'rol' debe ser 'Cliente' o 'Administrador'.")
+        return rol_valido.capitalize()
+
+class UsuarioSchema(UsuarioBaseSchema):
     password: SecretStr = Field(min_length=8) 
-    rol:str
+    @field_validator('password')
+    def validarPassword(cls, password:SecretStr)-> str :
+        v = password.get_secret_value()
+        
+        if not any(char.isdigit() for char in v):
+            raise HTTPException(
+                status_code=status.HTTP_417_EXPECTATION_FAILED,
+                detail="La contraseña debe contener al menos un número.")
+        
+        if not any(char.isalpha() for char in v):
+            raise HTTPException(
+                status_code=status.HTTP_417_EXPECTATION_FAILED,
+                detail="La contraseña debe contener al menos una letra.")
+        
+        return v
