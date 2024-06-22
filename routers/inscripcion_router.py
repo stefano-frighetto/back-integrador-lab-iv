@@ -3,9 +3,9 @@ from typing import List
 from schemas.inscripcion_schema import InscripcionSchema
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-"""from config.database import Session
+from config.database import Session
 from models.inscripcion_model import InscripcionModel
-from services.inscripcion_services import InscripcionService (ver despues)"""
+"""from services.inscripcion_services import InscripcionService (ver despues)"""
 
 inscripcion_router = APIRouter()
 
