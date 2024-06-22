@@ -6,11 +6,11 @@ from models.evento_model import EventoModel
 from schemas.evento_schema import EventoSchema
 from services.evento import EventoService
 
-producto_router = APIRouter()
+evento_router = APIRouter()
 
 eventos=[]
 
-@producto_router.get('/eventos/{id}', tags=['eventos'], response_model=dict)
+@evento_router.get('/eventos/{id}', tags=['eventos'], response_model=dict)
 def get_evento(id: int) -> EnvironmentError:
     db = Session()
     result = EventoService(db).get_evento(id)
@@ -18,13 +18,13 @@ def get_evento(id: int) -> EnvironmentError:
         return JSONResponse(status_code=404, content={'message': "No encontrado"})
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
 
-@producto_router.post('/eventos', tags=['eventos'], response_model=dict, status_code=201)
+@evento_router.post('/eventos', tags=['eventos'], response_model=dict, status_code=201)
 def create_evento(evento: EventoSchema) :
     db = Session()    
-    EventoService(db).create_evebto(evento)
+    EventoService(db).create_evento(evento)
     return JSONResponse(status_code=201, content={"message": "Se ha registrado el evento"})
 
-@producto_router.put('/eventos/{id}', tags=['eventos'], response_model=dict, status_code=200)
+@evento_router.put('/eventos/{id}', tags=['eventos'], response_model=dict, status_code=200)
 def update_evento(id: int, evento: EventoSchema):
     db = Session()
     result = EventoService(db).get_evento(id)
@@ -34,7 +34,7 @@ def update_evento(id: int, evento: EventoSchema):
     EventoService(db).update_evento(id, evento)
     return JSONResponse(status_code=200, content={"message": "Se ha modificado el evento"})
 
-@producto_router.delete('/evento/{id}', tags=['eventos'], response_model=dict, status_code=200)
+@evento_router.delete('/evento/{id}', tags=['eventos'], response_model=dict, status_code=200)
 def delete_evento(id: int):
     db = Session()
     result: EventoModel = db.query(EventoModel).filter(EventoModel.id == id).first()
