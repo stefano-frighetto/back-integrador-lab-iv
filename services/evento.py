@@ -10,7 +10,7 @@ class EventoService():
     def __init__(self, db) -> None:
         self.db = db
 
-    def get_evento(self):
+    def get_eventos(self):
         result = self.db.query(EventoSchema).all()
         return result
     

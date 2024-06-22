@@ -11,6 +11,14 @@ evento_router = APIRouter()
 eventos=[]
 
 @evento_router.get('/eventos/{id}', tags=['eventos'], response_model=dict)
+def get_eventos() -> EnvironmentError:
+    db = Session()
+    result = EventoService(db).get_eventos()
+    if not result:
+        return JSONResponse(status_code=404, content={'message': "No encontrado"})
+    return JSONResponse(status_code=200, content=jsonable_encoder(result))
+
+@evento_router.get('/eventos/{id}', tags=['eventos'], response_model=dict)
 def get_evento(id: int) -> EnvironmentError:
     db = Session()
     result = EventoService(db).get_evento(id)
