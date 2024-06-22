@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine
 
 from sqlalchemy.orm import sessionmaker, declarative_base
+# contraseña stefano
 #x7I10Sh32DcA
-DATABASE_URL = "mysql+mysqlconnector://root:CONTRASENIA@localhost:3306/bdd-integrador-lab-iv"
+DATABASE_URL = "mysql+mysqlconnector://root:x7I10Sh32DcA@localhost:3306/integradorLabIV"
 
 engine = create_engine(DATABASE_URL)
 
