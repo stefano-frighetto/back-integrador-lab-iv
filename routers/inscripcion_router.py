@@ -47,4 +47,3 @@ def delete_inscripcion(id: int):
         return JSONResponse(status_code=404, content={'message': "No encontrado"})
     InscripcionService(db).delete_inscripcion(id)
     return JSONResponse(status_code=200, content={"message": "Se ha eliminado la inscripcion"})
-
