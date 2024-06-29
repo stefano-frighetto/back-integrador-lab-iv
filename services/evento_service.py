@@ -3,6 +3,7 @@ from fastapi import File, UploadFile
 from fastapi.responses import FileResponse
 from models.evento_model import EventoModel
 from schemas.evento_schema import EventoSchema
+from utils.validators import idDuplicados
 
 
 class EventoService():
@@ -11,7 +12,7 @@ class EventoService():
         self.db = db
 
     def get_eventos(self):
-        result = self.db.query(EventoSchema).all()
+        result = self.db.query(EventoModel).all()
         return result
     
     def get_evento(self, id):
@@ -19,6 +20,8 @@ class EventoService():
         return result
     
     def create_evento(self, evento: EventoSchema):
+        lista = self.get_eventos()
+        idDuplicados(evento, lista)
         new_evento = EventoModel(**evento.model_dump())
         self.db.add(new_evento)
         self.db.commit()

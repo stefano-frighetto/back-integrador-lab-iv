@@ -10,7 +10,7 @@ evento_router = APIRouter()
 
 eventos=[]
 
-@evento_router.get('/eventos/{id}', tags=['Eventos'], response_model=dict)
+@evento_router.get('/eventos', tags=['Eventos'], response_model=dict)
 def get_eventos() -> EnvironmentError:
     db = Session()
     result = EventoService(db).get_eventos()
