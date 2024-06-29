@@ -1,6 +1,10 @@
+from passlib.context import CryptContext
 from models.usuario_model import UsuarioModel
 from schemas.usuario_schemas import UsuarioSchema,UsuarioBaseSchema
 from utils.validators import idDuplicados,emailDuplicado
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 class UsuarioService():
     def __init__(self, db) -> None:
         self.db = db
@@ -17,7 +21,8 @@ class UsuarioService():
         lista = self.get_usuarios()
         idDuplicados(user, lista)
         emailDuplicado(user,lista)
-
+        contrasenia_hasheada = pwd_context.hash(user.password)
+        user.password = contrasenia_hasheada
         new_user = UsuarioModel(**user.model_dump())
         self.db.add(new_user)
         self.db.commit()

@@ -14,18 +14,8 @@ import secrets
 
 class UsuarioBaseSchema(BaseModel):
     id: PositiveInt =Field(gt=0,le=1000)
-    def idDuplicados(obj, lista:List):
-        for item in lista:
-            if item.id == obj.id :
-                raise HTTPException(status_code=status.HTTP_409_CONFLICT,
-                            detail=f"El id ya se encuentra registrado" )
     nombre:str = Field (min_length=8, max_length=50)  
     email: EmailStr
-    def emailDuplicado(obj, lista:List):
-        for item in lista:
-            if item.email == obj.email:
-                raise HTTPException(status_code=status.HTTP_409_CONFLICT,
-                            detail=f"El email ya se encuentra registrado" )    
     rol: str = 'Cliente'
     @field_validator('rol')
     def validar_rol(cls, v: str) -> str:
@@ -33,6 +23,16 @@ class UsuarioBaseSchema(BaseModel):
         if rol_valido not in ("CLIENTE", "ADMINISTRADOR"):
             raise ValueError("El valor del campo 'rol' debe ser 'Cliente' o 'Administrador'.")
         return rol_valido.capitalize()
+    # def idDuplicados(obj, lista:List):
+    #     for item in lista:
+    #         if item.id == obj.id :
+    #             raise HTTPException(status_code=status.HTTP_409_CONFLICT,
+    #                         detail=f"El id ya se encuentra registrado" )
+    # def emailDuplicado(obj, lista:List):
+    #     for item in lista:
+    #         if item.email == obj.email:
+    #             raise HTTPException(status_code=status.HTTP_409_CONFLICT,
+    #                         detail=f"El email ya se encuentra registrado" )    
 
 class UsuarioSchema(UsuarioBaseSchema):
     password: SecretStr = Field(min_length=8) 
