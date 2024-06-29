@@ -15,7 +15,7 @@ def get_inscripciones():
     result = InscripcionService(db).get_inscripciones()
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
 
-@inscripcion_router.get('/inscripciones'/{id}, tags=['Inscripciones'], response_model=dict)
+@inscripcion_router.get('/inscripciones/{id}', tags=['Inscripciones'], response_model=dict)
 def get_inscripcion(id: int):
     db = Session()
     result = InscripcionService(db).get_inscripcion(id)

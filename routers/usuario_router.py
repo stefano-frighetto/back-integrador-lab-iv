@@ -17,7 +17,7 @@ def get_usuarios():
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
 
 
-@usuario_router.get('/usuarios/{id}', tags=['Usuarios'], response_model=[UsuarioBaseSchema])
+@usuario_router.get('/usuarios/{id}', tags=['Usuarios'], response_model=UsuarioBaseSchema)
 def get_usuario(id: int):
     db = Session()
     try:
@@ -34,7 +34,7 @@ def create_usuario(usuario: UsuarioBaseSchema) :
     UsuarioService(db).create_usuario(usuario)
     return JSONResponse(status_code=201, content={"message": "Se ha registrado el usuario"})
 
-@usuario_router.put('/usuarios/{id}', tags=['Usuarios'], response_model=[UsuarioBaseSchema], status_code=200)
+@usuario_router.put('/usuarios/{id}', tags=['Usuarios'], response_model=UsuarioBaseSchema, status_code=200)
 def update_usuario(id: int, usuario: UsuarioBaseSchema):
     db = Session()
     result = UsuarioService(db).get_usuario(id)
@@ -44,7 +44,7 @@ def update_usuario(id: int, usuario: UsuarioBaseSchema):
     UsuarioService(db).update_usuario(id, usuario)
     return JSONResponse(status_code=200, content={"message": "Se ha modificado el usuario"})
 
-@usuario_router.delete('/usuarios/{id}', tags=['Usuarios'], response_model=[UsuarioBaseSchema], status_code=200)
+@usuario_router.delete('/usuarios/{id}', tags=['Usuarios'], response_model=UsuarioBaseSchema, status_code=200)
 def delete_usuario(id: int):
     db = Session()
     result: UsuarioModel = db.query(UsuarioModel).filter(UsuarioModel.id == id).first()
