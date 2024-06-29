@@ -1,7 +1,8 @@
 from models.inscripcion_model import InscripcionModel
 from schemas.inscripcion_schema import InscripcionSchema
 from utils.validators import idDuplicados
-
+from datetime import date
+from models.evento_model import EventoModel
 class InscripcionService():
     def __init__(self, db) -> None:
         self.db = db
@@ -37,4 +38,12 @@ class InscripcionService():
     
     def get_inscripcion_usuario(self, usuario_id: int):
         result = self.db.query(InscripcionModel).filter(InscripcionModel.usuario_id == usuario_id).all()
+        return result
+    
+    def get_inscripcion_usuario_activa(self, usuario_id: int):
+        today = date.today()
+        result = self.db.query(InscripcionModel).join(EventoModel, InscripcionModel.evento_id == EventoModel.id).filter(
+            InscripcionModel.usuario_id == usuario_id,
+            EventoModel.fecha_inicio >= today
+        ).all()
         return result
