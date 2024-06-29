@@ -44,9 +44,3 @@ class EventoService():
     def get_evento_categoria(self, idCategoria:int):
         result = self.db.query(EventoModel).filter(EventoModel.idCategoria == idCategoria).all()
         return result
-    
-   
-    
-    
-    
-    
