@@ -44,6 +44,6 @@ class EventoService():
         self.db.commit()
         return True
     
-    def get_evento_categoria(self, idCategoria:int):
-        result = self.db.query(EventoModel).filter(EventoModel.idCategoria == idCategoria).all()
+    def get_evento_categoria(self, categoria_id: int):
+        result = self.db.query(EventoModel).filter(EventoModel.categoria_id == categoria_id).all()
         return result
