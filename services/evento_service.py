@@ -47,3 +47,16 @@ class EventoService():
     def get_evento_categoria(self, categoria_id: int):
         result = self.db.query(EventoModel).filter(EventoModel.categoria_id == categoria_id).all()
         return result
+    
+    def buscar_eventos_por_nombre_o_descripcion(self, nombre: str = None, descripcion: str = None):
+        query = self.db.query(EventoModel)
+        
+        # Filtrar por nombre si se proporciona
+        if nombre:
+            query = query.filter(EventoModel.nombre.ilike(f"%{nombre}%"))
+        
+        # Filtrar por descripción si se proporciona
+        if descripcion:
+            query = query.filter(EventoModel.descripcion.ilike(f"%{descripcion}%"))
+        
+        return query.all()

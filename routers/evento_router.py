@@ -10,12 +10,32 @@ evento_router = APIRouter()
 
 eventos=[]
 
+# @evento_router.get('/eventos', tags=['Eventos'], response_model=dict)
+# def get_eventos() -> EnvironmentError:
+#     db = Session()
+#     result = EventoService(db).get_eventos()
+#     if not result:
+#         return JSONResponse(status_code=404, content={'message': "No encontrado"})
+#     return JSONResponse(status_code=200, content=jsonable_encoder(result))
+
 @evento_router.get('/eventos', tags=['Eventos'], response_model=dict)
-def get_eventos() -> EnvironmentError:
+def get_eventos(nombre: str = None, descripcion: str = None):
     db = Session()
-    result = EventoService(db).get_eventos()
+    
+    # Crear una instancia del servicio de eventos
+    event_service = EventoService(db)
+    
+    # Si se proporciona nombre o descripción, filtramos por esos campos
+    if nombre or descripcion:
+        result = event_service.buscar_eventos_por_nombre_o_descripcion(nombre, descripcion)
+    else:
+        result = event_service.get_eventos()
+    
+    db.close()  # Cerrar la sesión de la base de datos
+    
     if not result:
-        return JSONResponse(status_code=404, content={'message': "No encontrado"})
+        return JSONResponse(status_code=404, content={'message': "No se encontraron eventos"})
+    
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
 
 @evento_router.get('/eventos/{id}', tags=['Eventos'], response_model=dict)
@@ -58,3 +78,4 @@ def get_evento_categoria(categoria_id: int):
     if not result:
         return JSONResponse(status_code=404, content={'message': "No encontrado"})
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
+
