@@ -47,3 +47,11 @@ def delete_inscripcion(id: int):
         return JSONResponse(status_code=404, content={'message': "No encontrado"})
     InscripcionService(db).delete_inscripcion(id)
     return JSONResponse(status_code=200, content={"message": "Se ha eliminado la inscripcion"})
+
+@inscripcion_router.get('/inscripciones/usuario/{usuario_id}', tags=['Inscripciones'], response_model=dict)
+def get_inscripcion_usuario(usuario_id: int):
+    db = Session()
+    result = InscripcionService(db).get_inscripcion_usuario(usuario_id)
+    if not result:
+        return JSONResponse(status_code=404, content={'message': "No se han encontrado inscripciones de este usuario"})
+    return JSONResponse(status_code=200, content=jsonable_encoder(result))

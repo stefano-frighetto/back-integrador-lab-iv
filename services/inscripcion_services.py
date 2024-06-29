@@ -31,3 +31,7 @@ class InscripcionService():
         self.db.query(InscripcionModel).filter(InscripcionModel.id == id).delete()
         self.db.commit()
         return True
+    
+    def get_inscripcion_usuario(self, usuario_id: int):
+        result = self.db.query(InscripcionModel).filter(InscripcionModel.usuario_id == usuario_id).all()
+        return result
