@@ -1,15 +1,12 @@
-from fastapi import FastAPI, status, Query, File, Depends
-from fastapi.exceptions import HTTPException
-from pydantic import BaseModel,EmailStr,Field, SecretStr, PositiveInt, field_validator
-from datetime import date
-from typing import List, Optional, Annotated
-from passlib.context import CryptContext
-from fastapi import UploadFile
-from fastapi.responses import FileResponse
-import os
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-import shutil
-import secrets
+from fastapi import APIRouter
+from typing import List
+from schemas.usuario_schemas import UsuarioBaseSchema
+from schemas.usuario_schemas import UsuarioSchema
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+from config.database import Session
+from models.usuario_model import UsuarioModel
+from services.usuario_service import UsuarioService
 
 usuario_router = APIRouter()
 
@@ -32,13 +29,13 @@ def get_usuario(id: int):
         db.close()
 
 @usuario_router.post('/usuarios', tags=['Usuarios'], status_code=201)
-def create_usuario(usuario: Usuario) :
+def create_usuario(usuario: UsuarioBaseSchema) :
     db = Session()    
     UsuarioService(db).create_usuario(usuario)
     return JSONResponse(status_code=201, content={"message": "Se ha registrado el usuario"})
 
 @usuario_router.put('/usuarios/{id}', tags=['Usuarios'], response_model=[UsuarioBaseSchema], status_code=200)
-def update_usuario(id: int, usuario: Usuario):
+def update_usuario(id: int, usuario: UsuarioBaseSchema):
     db = Session()
     result = UsuarioService(db).get_usuario(id)
     if not result:
