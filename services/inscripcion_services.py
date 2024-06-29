@@ -1,5 +1,7 @@
 from models.inscripcion_model import InscripcionModel
 from schemas.inscripcion_schema import InscripcionSchema
+from datetime import date
+
 
 class InscripcionService():
     def __init__(self, db) -> None:
@@ -34,4 +36,12 @@ class InscripcionService():
     
     def get_inscripcion_usuario(self, usuario_id: int):
         result = self.db.query(InscripcionModel).filter(InscripcionModel.usuario_id == usuario_id).all()
+        return result
+    
+    def get_inscripcion_usuario_activa(self, usuario_id: int):
+        today = date.today()
+        result = self.db.query(InscripcionModel).filter(
+            InscripcionModel.usuario_id == usuario_id,
+            InscripcionModel.fecha_inscripción >= today
+        ).all()
         return result
