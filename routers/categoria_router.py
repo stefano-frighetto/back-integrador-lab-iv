@@ -31,6 +31,7 @@ def create_categoria(categoria: CategoriaSchema):
     CategoriaService(db).create_categoria(categoria)
     return JSONResponse(status_code=201, content={"message": "Se ha registrado la categoria"})
 
+
 @categoria_router.put('/categorias/{id}', tags=['Categorias'], response_model=dict, status_code=200)
 def update_categoria(id: int, categoria: CategoriaSchema):
     db = Session()

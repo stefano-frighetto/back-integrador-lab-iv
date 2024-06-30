@@ -50,3 +50,11 @@ def delete_evento(id: int):
         return JSONResponse(status_code=404, content={'message': "No encontrado"})
     EventoService(db).delete_evento(id)
     return JSONResponse(status_code=200, content={"message": "Se ha eliminado el producto"})
+
+@evento_router.get('/eventos/categoria/{categoria_id}', tags=['Eventos'], response_model=dict)
+def get_evento_categoria(categoria_id: int):
+    db = Session()
+    result = EventoService(db).get_evento_categoria(categoria_id)
+    if not result:
+        return JSONResponse(status_code=404, content={'message': "No encontrado"})
+    return JSONResponse(status_code=200, content=jsonable_encoder(result))
