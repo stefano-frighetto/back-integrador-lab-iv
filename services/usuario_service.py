@@ -1,5 +1,6 @@
 from models.usuario_model import UsuarioModel
 from schemas.usuario_schemas import UsuarioSchema,UsuarioBaseSchema
+from utils.validators import idDuplicados,emailDuplicado
 class UsuarioService():
     def __init__(self, db) -> None:
         self.db = db
@@ -13,6 +14,10 @@ class UsuarioService():
         return result
     
     def create_usuario(self, user: UsuarioSchema):
+        lista = self.get_usuarios()
+        idDuplicados(user, lista)
+        emailDuplicado(user,lista)
+
         new_user = UsuarioModel(**user.model_dump())
         self.db.add(new_user)
         self.db.commit()
