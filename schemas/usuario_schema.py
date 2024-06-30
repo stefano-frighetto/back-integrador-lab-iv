@@ -23,16 +23,6 @@ class UsuarioBaseSchema(BaseModel):
         if rol_valido not in ("CLIENTE", "ADMINISTRADOR"):
             raise ValueError("El valor del campo 'rol' debe ser 'Cliente' o 'Administrador'.")
         return rol_valido.capitalize()
-    # def idDuplicados(obj, lista:List):
-    #     for item in lista:
-    #         if item.id == obj.id :
-    #             raise HTTPException(status_code=status.HTTP_409_CONFLICT,
-    #                         detail=f"El id ya se encuentra registrado" )
-    # def emailDuplicado(obj, lista:List):
-    #     for item in lista:
-    #         if item.email == obj.email:
-    #             raise HTTPException(status_code=status.HTTP_409_CONFLICT,
-    #                         detail=f"El email ya se encuentra registrado" )    
 
 class UsuarioSchema(UsuarioBaseSchema):
     password: SecretStr = Field(min_length=8) 

@@ -7,8 +7,9 @@ from utils.jwt_manager import validate_token
 class JWTBearer(HTTPBearer):
     async def __call__(self, request: Request):
         if request.url.path in ["/login"]:
-            return        
+            return
         auth = await super().__call__(request)
         data = validate_token(auth.credentials)
-        if data['email'] != "admin@gmail.com":
-            raise HTTPException(status_code=403, detail="Credenciales son invalidas")
+
+        # if data['email'] != "admin@gmail.com":
+        #     raise HTTPException(status_code=403, detail="Credenciales son invalidas")

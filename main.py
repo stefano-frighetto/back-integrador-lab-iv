@@ -14,7 +14,8 @@ from fastapi.staticfiles import StaticFiles
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(dependencies=[Depends(JWTBearer())])
-app.title = "Práctico nro 5"
+# app = FastAPI()
+app.title = "Integrador Lab IV"
 
 app.add_middleware(ErrorHandler)
 

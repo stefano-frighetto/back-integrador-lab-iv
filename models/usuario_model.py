@@ -8,6 +8,4 @@ class UsuarioModel(Base):
     nombre = Column(String(30))
     email = Column(String(50))
     rol = Column(String(20))
-    password = Column(String(20))
-
-
+    password = Column(String(150))
