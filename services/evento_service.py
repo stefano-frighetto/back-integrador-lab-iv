@@ -3,6 +3,7 @@ from fastapi import File, UploadFile
 from fastapi.responses import FileResponse
 from models.evento_model import EventoModel
 from schemas.evento_schema import EventoSchema
+from services.categoria_service import CategoriaService
 from utils.validators import idDuplicados
 
 
@@ -20,6 +21,14 @@ class EventoService():
         return result
     
     def create_evento(self, evento: EventoSchema):
+        # Verificar si la categoría existe antes de crear el evento
+        categoria_service = CategoriaService(self.db)
+        categoria_existente = categoria_service.get_categoria(evento.categoria_id)
+        
+        if not categoria_existente:
+            # Manejar la situación donde la categoría no existe
+            raise ValueError("La categoría especificada no existe")
+        
         lista = self.get_eventos()
         idDuplicados(evento, lista)
         new_evento = EventoModel(**evento.model_dump())
