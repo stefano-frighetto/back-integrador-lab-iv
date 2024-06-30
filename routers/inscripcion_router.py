@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from config.database import Session
 from models.inscripcion_model import InscripcionModel
 from services.inscripcion_services import InscripcionService
+from utils.validators import validar_cupos_disponibles
 
 inscripcion_router = APIRouter()
 
@@ -26,6 +27,7 @@ def get_inscripcion(id: int):
 @inscripcion_router.post('/inscripciones', tags=['Inscripciones'], response_model=dict, status_code=201)
 def create_inscripcion(inscripcion: InscripcionSchema):
     db = Session()
+    validar_cupos_disponibles(db, inscripcion.evento_id)
     InscripcionService(db).create_inscripcion(inscripcion)
     return JSONResponse(status_code=201, content={"message": "La inscripción ha sido registrada exitosamente"})
 
