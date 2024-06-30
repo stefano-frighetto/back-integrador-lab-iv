@@ -19,7 +19,7 @@ app.title = "Integrador Lab IV"
 
 app.add_middleware(ErrorHandler)
 
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+# app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 app.include_router(userauth_router)
 app.include_router(categoria_router)

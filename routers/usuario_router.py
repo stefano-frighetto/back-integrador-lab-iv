@@ -28,7 +28,7 @@ def get_usuario(id: int):
     # return JSONResponse(status_code=200, content=jsonable_encoder(result))
     return result
 
-@usuario_router.post('/usuarios', tags=['Usuarios'], status_code=201)
+@usuario_router.post('/usuarios', tags=['Usuarios'], status_code=201, response_model=UsuarioBaseSchema)
 def create_usuario(usuario: UsuarioSchema) :
     db = Session()
     result = UsuarioService(db).create_usuario(usuario)
@@ -54,7 +54,3 @@ def delete_usuario(id: int):
     result = UsuarioService(db).delete_usuario(id)
     # return JSONResponse(status_code=200, content={"message": "Se ha eliminado el usuario"})
     return result
-
-
-
-
