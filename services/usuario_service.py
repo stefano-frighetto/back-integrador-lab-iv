@@ -23,11 +23,11 @@ class UsuarioService():
         emailDuplicado(user,lista)
         contrasenia_hasheada = pwd_context.hash(user.password)
         user.password = contrasenia_hasheada
-        new_user = UsuarioModel(**user.model_dump())
-        self.db.add(new_user)
+        result = UsuarioModel(**user.model_dump())
+        self.db.add(result)
         self.db.commit()
-        self.db.refresh(new_user)
-        return new_user
+        self.db.refresh(result)
+        return result
 
     def update_usuario(self, id: int, user: UsuarioSchema):
         result = self.db.query(UsuarioModel).filter(UsuarioModel.id == id).first()
